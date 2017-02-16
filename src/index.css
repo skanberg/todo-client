@@ -3,3 +3,7 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.mdl-layout__header .mdl-layout__header-row {
+  padding-left: 20px;
+}
