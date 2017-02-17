@@ -1,20 +1,38 @@
-import React, { Component } from 'react';
-import { Layout, Header, Content } from "react-mdl";
+import React, { Component } from "react";
+import { Layout, Header, Content, Spinner } from "react-mdl";
+import { graphql } from "react-apollo";
+import gql from 'graphql-tag';
+
 import TodoItem from "./TodoItem";
 
-const todoItems = [{ id: "1", name: "Name 1", description: "desc 1"}];
+const query = gql`
+  query allTodoItems {
+    allTodoItems {
+      id
+      name
+      description
+      completed
+    }
+  }
+`;
 
 class App extends Component {
   render() {
+    console.log(this.props.data);
+    const { data: { loading, allTodoItems } } = this.props;
     return (
       <Layout fixedHeader>
         <Header title="TODO App"/>
         <Content>
-          { todoItems.map((item) => <TodoItem { ...item } />) }
+          { loading ? <Spinner /> : (
+            <div>
+            { allTodoItems.map((item) => <TodoItem key={item.id} { ...item } />) }
+            </div>
+          )}
         </Content>
       </Layout>
     );
   }
 }
 
-export default App;
+export default graphql(query)(App);
