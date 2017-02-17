@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Header } from "react-mdl";
+import { Layout, Header } from "react-mdl";
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <Layout fixedHeader>
         <Header title="TODO App"/>
-      </div>
+      </Layout>
     );
   }
 }
