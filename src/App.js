@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Layout, Header, Content, Spinner } from "react-mdl";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-
 import TodoItem from "./TodoItem";
 
 const query = gql`
