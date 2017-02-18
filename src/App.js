@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Header, Content, Spinner, List } from "react-mdl";
+import { Layout, Header, Content, Spinner, List, IconButton } from "react-mdl";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -18,14 +18,16 @@ const query = gql`
 
 class App extends Component {
   render() {
-    const { data: { loading, allTodoItems } } = this.props;
+    const { data } = this.props;
     return (
       <Layout fixedHeader>
-        <Header title="TODO App"/>
+        <Header title="TODO App">
+          <IconButton ripple name="add_circle_outline" onClick={() => {}}/>
+        </Header>
         <Content>
-          { loading ? <Spinner /> : (
+          { data.loading ? <Spinner /> : (
             <List>
-            { allTodoItems.map((item) => <TodoItem key={item.id} { ...item } />) }
+            { data.allTodoItems.map((item) => <TodoItem key={item.id} { ...item } />) }
             </List>
           )}
         </Content>
