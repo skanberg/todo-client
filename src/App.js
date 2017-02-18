@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Header, Content, Spinner } from "react-mdl";
+import { Layout, Header, Content, Spinner, List } from "react-mdl";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 
@@ -24,9 +24,9 @@ class App extends Component {
         <Header title="TODO App"/>
         <Content>
           { loading ? <Spinner /> : (
-            <div>
+            <List>
             { allTodoItems.map((item) => <TodoItem key={item.id} { ...item } />) }
-            </div>
+            </List>
           )}
         </Content>
       </Layout>
