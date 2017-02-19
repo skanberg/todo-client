@@ -16,24 +16,19 @@ const query = gql`
   }
 `;
 
-class App extends Component {
-  render() {
-    const { data } = this.props;
-    return (
-      <Layout fixedHeader>
-        <Header title="TODO App">
-          <IconButton ripple name="add_circle_outline" onClick={() => {}}/>
-        </Header>
-        <Content>
-          { data.loading ? <Spinner /> : (
-            <List>
+const App = ({ data }) => (
+  <Layout fixedHeader>
+    <Header title="TODO App">
+      <IconButton ripple name="add_circle_outline" onClick={() => {}}/>
+    </Header>
+    <Content>
+      { data.loading ? <Spinner /> : (
+          <List>
             { data.allTodoItems.map((item) => <TodoItem key={item.id} { ...item } />) }
-            </List>
-          )}
-        </Content>
-      </Layout>
-    );
-  }
-}
+          </List>
+        )}
+    </Content>
+  </Layout>
+);
 
 export default graphql(query)(App);
