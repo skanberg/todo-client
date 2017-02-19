@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Layout, Header, Content, Spinner, List, IconButton } from "react-mdl";
+import { Layout, Header, Content, Spinner, List } from "react-mdl";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-
+import AddTodoItem from "./AddTodoItem";
 import TodoItem from "./TodoItem";
 
 const query = gql`
@@ -19,7 +19,7 @@ const query = gql`
 const App = ({ data }) => (
   <Layout fixedHeader>
     <Header title="TODO App">
-      <IconButton ripple name="add_circle_outline" onClick={() => {}}/>
+      <AddTodoItem />
     </Header>
     <Content>
       { data.loading ? <Spinner /> : (
