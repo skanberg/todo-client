@@ -29,7 +29,7 @@ const DeleteButton = ({ id, mutate }) => {
   }
 
   return (
-    <IconButton colored ripple name="delete" onClick={onClick}/>
+    <IconButton colored ripple name="delete" onClick={onClick} />
   );
 };
 
