@@ -22,8 +22,6 @@ class AddTodoItem extends React.Component {
     super(props);
     this.openDialog = this.openDialog.bind(this);
     this.addTodoItem = this.addTodoItem.bind(this);
-    this.onNameChange = this.onNameChange.bind(this);
-    this.onDescriptionChange = this.onDescriptionChange.bind(this);
     this.closeDialog = this.closeDialog.bind(this);
     this.state = {
       dialogOpen: false,
@@ -43,18 +41,6 @@ class AddTodoItem extends React.Component {
       dialogOpen: false,
       name: "",
       description: "",
-    });
-  }
-
-  onNameChange(value) {
-    this.setState({
-      name: value,
-    });
-  }
-
-  onDescriptionChange(value) {
-    this.setState({
-      description: value,
     });
   }
 
