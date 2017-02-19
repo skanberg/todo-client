@@ -1,10 +1,11 @@
 import React from "react";
-import { Layout, Header, Content, Spinner } from "react-mdl";
+import { Layout, Header, Content } from "react-mdl";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
 import AddTodoItem from "./AddTodoItem";
 import TodoItemList from "./TodoItemList";
 import RefetchButton from "./RefetchButton";
+import LoadingIndicator from "./LoadingIndicator";
 
 const query = gql`
   query allTodoItems {
@@ -24,7 +25,7 @@ const App = ({ data }) => (
       <AddTodoItem />
     </Header>
     <Content>
-      { data.loading ? <Spinner /> : <TodoItemList todoItems={data.allTodoItems} /> }
+      { data.loading ? <LoadingIndicator /> : <TodoItemList todoItems={data.allTodoItems} /> }
     </Content>
   </Layout>
 );
