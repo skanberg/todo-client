@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Snackbar,
 } from "react-mdl";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
@@ -13,7 +14,7 @@ import InputField from "./InputField";
 
 const query = gql`
   mutation addNewItem($name: String!, $description: String) {
-    addTodoItem(name: $name, description: $description) { id }
+    addTodoItem(name: $name, description: $description)
   }
 `;
 
@@ -23,16 +24,24 @@ class AddTodoItem extends React.Component {
     this.openDialog = this.openDialog.bind(this);
     this.addTodoItem = this.addTodoItem.bind(this);
     this.closeDialog = this.closeDialog.bind(this);
+    this.setMessage = this.setMessage.bind(this);
     this.state = {
       dialogOpen: false,
       name: "",
       description: "",
+      message: null,
     };
   }
 
   openDialog() {
     this.setState({
       dialogOpen: true,
+    });
+  }
+
+  setMessage(message) {
+    this.setState({
+      message,
     });
   }
 
@@ -52,14 +61,16 @@ class AddTodoItem extends React.Component {
         description,
       },
       refetchQueries: ["allTodoItems"],
-    }).then(({ data }) => {
-      console.log(data);
+    }).then(() => {
+      this.setMessage("Todo item added.");
+    }).catch(() => {
+      this.setMessage("Failed to add todo item.")
     });
     this.closeDialog();
   }
 
   render() {
-    const { dialogOpen, name, description } = this.state;
+    const { dialogOpen, name, description, message } = this.state;
     return (
       <div>
         <IconButton ripple name="add_circle_outline" onClick={this.openDialog} />
@@ -74,6 +85,7 @@ class AddTodoItem extends React.Component {
             <Button onClick={this.closeDialog}>Cancel</Button>
           </DialogActions>
         </Dialog>
+        <Snackbar active={message !== null} onTimeout={() => { this.setMessage(null); }}>{ message }</Snackbar>
       </div>
     );
   }
