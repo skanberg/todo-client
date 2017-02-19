@@ -15,7 +15,16 @@ const DeleteButton = ({ id, mutate }) => {
       variables: {
         id,
       },
-      refetchQueries: ["allTodoItems"],
+      updateQueries: {
+        allTodoItems: (prev, { mutationResult }) => {
+          if (mutationResult.data.removeTodoItem) {
+            return {
+              allTodoItems: prev.allTodoItems.filter((item) => item.id !== id),
+            }
+          }
+          return prev;
+        }
+      },
     });
   }
 
