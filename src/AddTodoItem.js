@@ -6,50 +6,86 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Textfield,
 } from "react-mdl";
+import { graphql } from "react-apollo";
+import gql from "graphql-tag";
+import InputField from "./InputField";
+
+const query = gql`
+  mutation addNewItem($name: String!, $description: String) {
+    addTodoItem(name: $name, description: $description) { id }
+  }
+`;
 
 class AddTodoItem extends React.Component {
   constructor(props) {
     super(props);
-    this.toggleDialog = this.toggleDialog.bind(this);
+    this.openDialog = this.openDialog.bind(this);
+    this.addTodoItem = this.addTodoItem.bind(this);
+    this.onNameChange = this.onNameChange.bind(this);
+    this.onDescriptionChange = this.onDescriptionChange.bind(this);
+    this.closeDialog = this.closeDialog.bind(this);
     this.state = {
       dialogOpen: false,
-      name: null,
-      description: null,
+      name: "",
+      description: "",
     };
   }
 
-  toggleDialog() {
-    this.setState((prevState) => ({
-      dialogOpen: !prevState.dialogOpen,
-    }));
+  openDialog() {
+    this.setState({
+      dialogOpen: true,
+    });
+  }
+
+  closeDialog() {
+    this.setState({
+      dialogOpen: false,
+      name: "",
+      description: "",
+    });
+  }
+
+  onNameChange(value) {
+    this.setState({
+      name: value,
+    });
+  }
+
+  onDescriptionChange(value) {
+    this.setState({
+      description: value,
+    });
+  }
+
+  addTodoItem() {
+    const { name, description } = this.state;
+    this.props.mutate({
+      variables: {
+        name,
+        description,
+      },
+      refetchQueries: ["allTodoItems"],
+    }).then(({ data }) => {
+      console.log(data);
+    });
+    this.closeDialog();
   }
 
   render() {
-    const { name, description } = this.props;
+    const { dialogOpen, name, description } = this.state;
     return (
       <div>
-        <IconButton ripple name="add_circle_outline" onClick={this.toggleDialog} />
-        <Dialog open={this.state.dialogOpen}>
+        <IconButton ripple name="add_circle_outline" onClick={this.openDialog} />
+        <Dialog open={dialogOpen}>
           <DialogTitle>Add New</DialogTitle>
           <DialogContent>
-            <Textfield
-              label="Name"
-              floatingLabel
-              value={name}
-              onChange={(e) => { this.setState({ name: e.target.value }); }}
-            />
-            <Textfield
-              label="Description"
-              floatingLabel
-              value={description}
-              onChange={(e) => { this.setState({ description: e.target.value }); }}
-            />
+            <InputField name="Name" value={name} onChange={(value) => { this.setState({ name: value }); }} />
+            <InputField name="Description" value={description} onChange={(value) => { this.setState({ description: value }); }} />
           </DialogContent>
           <DialogActions>
-            <Button>Add</Button>
-            <Button onClick={this.toggleDialog}>Cancel</Button>
+            <Button onClick={this.addTodoItem}>Add</Button>
+            <Button onClick={this.closeDialog}>Cancel</Button>
           </DialogActions>
         </Dialog>
       </div>
@@ -57,4 +93,4 @@ class AddTodoItem extends React.Component {
   }
 }
 
-export default AddTodoItem;
+export default graphql(query)(AddTodoItem);

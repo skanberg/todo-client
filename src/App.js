@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Layout, Header, Content, Spinner, List } from "react-mdl";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
