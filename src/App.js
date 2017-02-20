@@ -1,8 +1,11 @@
-import React, { Component } from "react";
-import { Layout, Header, Content, Spinner } from "react-mdl";
+import React from "react";
+import { Layout, Header, Content } from "react-mdl";
 import { graphql } from "react-apollo";
 import gql from "graphql-tag";
-import TodoItem from "./TodoItem";
+import AddTodoItem from "./AddTodoItem";
+import TodoItemList from "./TodoItemList";
+import RefetchButton from "./RefetchButton";
+import LoadingIndicator from "./LoadingIndicator";
 
 const query = gql`
   query allTodoItems {
@@ -15,22 +18,16 @@ const query = gql`
   }
 `;
 
-class App extends Component {
-  render() {
-    const { data: { loading, allTodoItems } } = this.props;
-    return (
-      <Layout fixedHeader>
-        <Header title="TODO App"/>
-        <Content>
-          { loading ? <Spinner /> : (
-            <div>
-            { allTodoItems.map((item) => <TodoItem key={item.id} { ...item } />) }
-            </div>
-          )}
-        </Content>
-      </Layout>
-    );
-  }
-}
+const App = ({ data }) => (
+  <Layout fixedHeader>
+    <Header title="TODO App">
+      <RefetchButton refetch={data.refetch} />
+      <AddTodoItem />
+    </Header>
+    <Content>
+      { data.loading ? <LoadingIndicator /> : <TodoItemList todoItems={data.allTodoItems} /> }
+    </Content>
+  </Layout>
+);
 
 export default graphql(query)(App);
